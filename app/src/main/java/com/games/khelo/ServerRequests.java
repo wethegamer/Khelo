@@ -15,6 +15,6 @@ public class ServerRequests {
     public static final String MSG_ID="message_id";
     public static final String MSG="message";
     public static final String TIME_STAMP="time_stamp";
-    
+
 
 }
