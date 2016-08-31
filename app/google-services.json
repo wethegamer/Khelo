@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "604132682222",
+    "firebase_url": "https://khelo-edee8.firebaseio.com",
+    "project_id": "khelo-edee8",
+    "storage_bucket": "khelo-edee8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:604132682222:android:18077aabeac8ae2e",
+        "android_client_info": {
+          "package_name": "com.games.khelo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "604132682222-qs8dd4um22bun69si15bhbgdt6m1eelo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.games.khelo",
+            "certificate_hash": "D5683BA8B9EDA6F28FF936E62112C784672B4397"
+          }
+        },
+        {
+          "client_id": "604132682222-72khu73v17rrkob1aj85nej10tjd668v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBobvk9Fv5gsw0gDn7lxJd3P46ViYvRYJ4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "604132682222-72khu73v17rrkob1aj85nej10tjd668v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
