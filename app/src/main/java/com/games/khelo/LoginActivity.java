@@ -21,7 +21,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
 
-    SharedPreferences details;
     private static final String TAG = "LoginActivity";
     public static final int RC_SIGN_IN=2401;
     public static final String USER_NAME="username";
@@ -34,7 +33,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        details=getPreferences(MODE_PRIVATE);
 
         findViewById(R.id.google_sign_in).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,7 +79,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             hideProgressDialog();
             account=result.getSignInAccount();
             Toast.makeText(LoginActivity.this, "Signed in successfully!", Toast.LENGTH_SHORT).show();
-            SharedPreferences.Editor edit=details.edit();
+            SharedPreferences.Editor edit=MainActivity.details.edit();
             edit.putString(USER_NAME,account.getDisplayName());
             edit.putString(EMAIL_ID,account.getEmail());
             edit.commit();
@@ -130,7 +128,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             return;
         }
         Toast.makeText(LoginActivity.this, "Signed in Succesfully!", Toast.LENGTH_SHORT).show();
-        SharedPreferences.Editor edit=details.edit();
+        SharedPreferences.Editor edit=MainActivity.details.edit();
         edit.putString(USER_NAME,s1);
         edit.putString(EMAIL_ID,s2);
         edit.commit();
@@ -143,5 +141,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         hideProgressDialog();
         Toast.makeText(LoginActivity.this, "Check your internet connection", Toast.LENGTH_SHORT).show();
 
+    }
+
+    @Override
+    public void onBackPressed() {
     }
 }

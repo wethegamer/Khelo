@@ -2,6 +2,8 @@ package com.games.khelo;
 
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.widget.Toast;
 
 public class ServerRequests {
@@ -27,14 +29,36 @@ public class ServerRequests {
         return serverRequests;
     }
 
-    public void signIn(Context c, String s)
+    public void signIn(Context c, String s,String s2)
     {
         if(s.length()!=10)
         {
             Toast.makeText(c, "Invalid Phone Number!", Toast.LENGTH_SHORT).show();
             return;
         }
+        for(int i=0;i<10;i++)
+        {
+            if(s.charAt(i)<'0' || s.charAt(i)>'9')
+            {
+                Toast.makeText(c, "Invalid Phone Number!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }
+        if(s2.isEmpty())
+        {
+            Toast.makeText(c, "Invalid Phone Number!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        SharedPreferences.Editor et=MainActivity.details.edit();
+        et.putString(MainActivity.PHONE,s);
+        et.commit();
+        Intent i=new Intent(c,MainActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        c.startActivity(i);
+
     }
+
+
 
 
 }

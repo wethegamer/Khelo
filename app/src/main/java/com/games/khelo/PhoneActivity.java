@@ -15,14 +15,14 @@ public class PhoneActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_phone);
         sr=ServerRequests.getInstance();
+        final TextView tv=(TextView) findViewById(R.id.code);
         findViewById(R.id.done).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 EditText et= (EditText) findViewById(R.id.phone);
-                sr.signIn(PhoneActivity.this,et.getText().toString());
+                sr.signIn(PhoneActivity.this,et.getText().toString(),tv.getText().toString());
             }
         });
-        final TextView tv=(TextView) findViewById(R.id.code);
         tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -38,4 +38,10 @@ public class PhoneActivity extends AppCompatActivity {
         });
 
     }
+
+    @Override
+    public void onBackPressed() {
+
+    }
+
 }

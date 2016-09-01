@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Khelo</string>
 
-    <string-array name="CountryCodes" >
+    <string-array name="CountryCodes">
         <item>93,AF</item>
         <item>355,AL</item>
         <item>213,DZ</item>
@@ -208,5 +208,8 @@
         <item>260,ZM</item>
         <item>263,ZW</item>
     </string-array>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
 
 </resources>
