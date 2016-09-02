@@ -145,5 +145,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     @Override
     public void onBackPressed() {
+        Intent i2=new Intent(this,MainActivity.class);
+        i2.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        i2.putExtra("EXIT", true);
+        startActivity(i2);
+
     }
 }

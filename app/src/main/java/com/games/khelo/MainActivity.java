@@ -1,11 +1,20 @@
 package com.games.khelo;
 
+import android.*;
+import android.Manifest;
+import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Paint;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.app.LoaderManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -19,10 +28,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.widget.BaseAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+
+import java.util.ArrayList;
+
+public class MainActivity extends AppCompatActivity  {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -37,24 +50,43 @@ public class MainActivity extends AppCompatActivity {
     public static final String UID="user_id";
     public static final String USER_NAME="username";
     public static final String PHONE="phone";
+    ContactsList cl;
 
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
+    String[] reqPerms=new String[]{
+            android.Manifest.permission.READ_CONTACTS,
+            android.Manifest.permission.WRITE_CONTACTS
+    };
+
+    static int REQUEST_CODE_STORAGE_PERM=445;
+
     private ViewPager mViewPager;
 
     @Override
     protected void onStart() {
+
+        Intent i2=getIntent();
+
+        if (i2 != null) {
+            if (i2.getBooleanExtra("EXIT", false)) {
+                finish();
+            }
+        }
+
         details=getPreferences(MODE_PRIVATE);
-        if(!details.contains(USER_NAME))
+        assert i2 != null;
+        if(!details.contains(USER_NAME) && !i2.getBooleanExtra("EXIT", false))
         {
             Intent i=new Intent(this,LoginActivity.class);
             startActivity(i);
         }
-        else if(!details.contains(PHONE))
+        else if(!details.contains(PHONE) && !i2.getBooleanExtra("EXIT", false))
         {
             Intent i=new Intent(this,PhoneActivity.class);
             startActivity(i);
+        }
+        int perStatus= ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_CONTACTS);
+        if(perStatus== PackageManager.PERMISSION_DENIED){
+            ActivityCompat.requestPermissions(this,reqPerms,REQUEST_CODE_STORAGE_PERM);
         }
 
         super.onStart();
@@ -67,11 +99,13 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
+
+
+        cl=ContactsList.getInstance(this,getLoaderManager());
+
+
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
-        // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
@@ -93,6 +127,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
     }
 
 
@@ -105,12 +140,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
@@ -118,72 +149,18 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
-        public PlaceholderFragment() {
-        }
+        if(requestCode==REQUEST_CODE_STORAGE_PERM)
+        {
+            if(grantResults.length>0)
+            {
 
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, null, false);
-
-            return rootView;
-        }
-    }
-
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
-        public SectionsPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
-        }
-
-        @Override
-        public int getCount() {
-            // Show 2 total pages.
-            return 2;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            switch (position) {
-                case 0:
-                    return "CHATS";
-                case 1:
-                    return "CONTACTS";
             }
-            return null;
         }
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
+
 }
